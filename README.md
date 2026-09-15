@@ -1,296 +1,108 @@
 # RootMikroManager
-Application Flutter/Dart native de gestion MikroTik RouterOS, issue d'une migration fonctionnelle progressive de RootMikroManager.
 
-## État de cette livraison
-Cette version renforce la base précédente avec :
-- protocole binaire RouterOS amélioré, connexion et authentification API ;
-- commandes RouterOS pour ressources, interfaces, logs, Hotspot et DHCP ;
-- gestion Hotspot (liste, actifs, suppression) ;
-- générateur de vouchers avec écriture RouterOS + historique SQLite ;
-- SQLite v2 avec journaux et export JSON.
+**RootMikroManager** est une application native **Flutter/Dart** de gestion d'équipements **MikroTik RouterOS** — hotspot, PPP/PPPoE, DHCP, firewall, files d'attente, VPN, monitoring et bien plus — directement depuis un téléphone, une tablette ou un ordinateur, sans passer par un serveur web PHP intermédiaire.
 
-## Important
-La parité totale avec toutes les pages PHP de RootMikroManager reste un travail de migration et de test module par module. Cette archive contient une base réellement implémentée pour les modules ci-dessus et doit être testée contre RouterOS 6/7 avant usage en production.
+Le projet est une migration fonctionnelle de l'outil web historique *RootMikroManager* vers une application native multiplateforme (Android, Windows, Linux, macOS, iOS, Web), qui communique en direct avec l'API RouterOS des routeurs.
 
-## NEXT – Modules réseau ajoutés
-Cette livraison ajoute des écrans Flutter reliés au service RouterOS pour DHCP, DNS statique, Interfaces, Wireless, Firewall Filter/NAT, Simple Queues et un outil Ping. Ces modules lisent les données directement via l'API RouterOS lorsque la session est connectée.
+> ⚠️ **Statut du projet** : de nombreux modules sont fonctionnels et communiquent réellement avec l'API RouterOS, mais la parité complète avec toutes les pages de l'outil PHP d'origine est un travail en cours. Chaque module doit être validé sur un routeur MikroTik réel (RouterOS 6/7) avant un usage en production. Voir [docs/COMPLETENESS_AUDIT.md](docs/COMPLETENESS_AUDIT.md).
 
-### Limite actuelle
-Les commandes d'écriture avancées (ajout/modification/suppression) doivent encore être testées sur un routeur réel avant une utilisation de production. Le protocole RouterOS peut varier selon la version et la configuration TLS/API du routeur.
+## Sommaire
 
-## Version NEXT SYSTEM
-Ajouts : Traffic avec actualisation automatique, consultation RouterOS des Scripts/Scheduler/Logs et export de sauvegarde locale JSON.
+- [Fonctionnalités](#fonctionnalités)
+- [Captures d'écran](#captures-décran)
+- [Architecture technique](#architecture-technique)
+- [Structure du projet](#structure-du-projet)
+- [Démarrage rapide](#démarrage-rapide)
+- [Compilation](#compilation)
+- [Documentation](#documentation)
+- [Avertissement](#avertissement)
 
-## Version MANAGEMENT
-Cette version ajoute une couche CRUD RouterOS générique pour les modules DHCP, DNS et Simple Queues : ajout, modification, suppression, activation et désactivation. Les opérations sont envoyées directement au routeur connecté via l'API RouterOS.
+## Fonctionnalités
 
-## Version ADVANCED
-Cette version ajoute la gestion CRUD Firewall Filter/NAT, la gestion des Scripts et Scheduler, ainsi qu'une base complète d'import/export JSON des données locales RootMikroManager.
+### Connexion & gestion multi-routeurs
+- Ajout, groupes, tags et recherche multi-routeurs.
+- Connexion via API RouterOS (port 8728) et API-SSL (port 8729, `SecureSocket`, certificat auto-signé ou validation stricte), ainsi que REST HTTPS.
+- Découverte réseau : scan IP `/24`, Neighbor Discovery, RoMON.
+- Découverte via VPN (WireGuard, MikroTik BackToHome, ZeroTier) avec extraction automatique des plages candidates.
+- Mot de passe stocké dans le stockage sécurisé de l'appareil (`flutter_secure_storage`).
 
+### Hotspot
+- Liste des utilisateurs et sessions actives, déconnexion.
+- Générateur de vouchers (préfixe, longueur, mode, durée, limite de données) avec écriture RouterOS et historique local SQLite, impression et export QR/PDF.
+- Profils Hotspot complets (Pool, Shared Users, Rate Limit, Expired Mode, Validity, Grace Period, Price, Selling Price, Lock User, Parent Queue) avec génération du script *on-login* et synchronisation du scheduler.
+- Host → IP Binding, filtres profil/lot/expiration, réinitialisation et suppression sécurisée par lot.
 
-## Version PRO – Suite
+### Réseau & routage
+- DHCP (baux et serveurs), DNS statique, Interfaces, Wireless/CAPsMAN, Bridge/VLAN.
+- Firewall Filter/NAT/Mangle/Address Lists, Simple Queues et Queue Tree — CRUD complet.
+- PPP/PPPoE (secrets, profils, sessions actives), routage IP et IPv6.
+- Outils réseau : Ping, Traceroute, test TCP du port API.
 
-Ajouts: gestion Hotspot avancée (profils et comptes), consultation PPP/PPPoE, rapports synthétiques RouterOS, et commandes de création de backup/export RouterOS. Les backups RouterOS sont créés sur le routeur et doivent être récupérés via un mécanisme de téléchargement approprié selon la politique d'accès du routeur.
+### Monitoring & système
+- Traffic RX/TX en direct via `router_os_client` (`/interface/monitor-traffic` en streaming, avec repli en polling) et Torch temps réel.
+- Logs, Scripts, Scheduler RouterOS consultables et exécutables.
+- Rapports de vente (Selling Report) avec filtres, recherche, export CSV.
+- Sauvegarde/restauration : backup RouterOS natif, export/import JSON local, gestionnaire de fichiers du routeur.
+- Commandes système (reboot, shutdown) avec confirmation utilisateur.
+- Journal d'audit local des actions effectuées.
 
+## Captures d'écran
 
-## Version ULTIMATE – Suite
+<!-- SCREENSHOTS -->
 
-Ajouts de cette étape :
-- Outils réseau Ping et Traceroute.
-- Monitoring automatique des interfaces avec actualisation périodique.
-- Commandes système avec confirmation utilisateur : reboot et shutdown.
-- Architecture préparée pour intégrer ces écrans à la navigation principale.
+## Architecture technique
 
-### Notes
-Les commandes système et outils réseau nécessitent une connexion RouterOS active et des droits suffisants sur le compte MikroTik.
+- **UI** : Flutter, navigation via `go_router`.
+- **Données locales** : SQLite (`sqflite`), avec migrations versionnées et export/import JSON.
+- **Secrets** : `flutter_secure_storage`.
+- **RouterOS** : client API binaire maison (`lib/core/routeros`) + `router_os_client` pour le streaming, `http` pour le REST HTTPS.
+- Aucun serveur PHP ou web intermédiaire n'est nécessaire : l'application dialogue directement avec l'API du routeur.
 
+Voir [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) et [docs/MIGRATION_MAPPING.md](docs/MIGRATION_MAPPING.md) pour le détail de la correspondance avec l'outil PHP d'origine.
 
-## RELEASE CANDIDATE – Consolidation
+## Structure du projet
 
-Cette version consolide les livraisons précédentes :
-- correction de la couche RouterOS API pour éviter les signatures de méthodes dupliquées ;
-- ajout d'une méthode `print()` cohérente avec les arguments RouterOS ;
-- uniformisation des commandes CRUD ;
-- correction des chemins RouterOS (`/chemin/add`, `/chemin/set`, `/chemin/remove`) ;
-- suppression des extensions concurrentes qui empêchaient la compilation ;
-- renommage du dossier racine en `RootMikroManager`.
+```
+lib/
+  core/           # RouterOS client/API, base de données, sécurité, navigation, réseau
+  features/       # Un dossier par module : hotspot, ppp, firewall, queues, vouchers,
+                  # monitoring, discovery, vpn, reports, system, audit, backup, ...
+docs/             # Journal détaillé de chaque phase de développement (un fichier par lot)
+android/ ios/ linux/ macos/ windows/ web/   # Cibles de compilation Flutter
+```
 
-### Vérification recommandée
-Avant une publication APK, exécuter :
-`flutter pub get`
-`flutter analyze`
-`flutter run`
+## Démarrage rapide
 
-Puis tester chaque module sur un vrai routeur MikroTik.
+Prérequis : [Flutter SDK](https://docs.flutter.dev/get-started/install) (Dart ≥ 3.12) et, selon la cible, Android SDK / Xcode / toolchain desktop.
 
+```bash
+flutter pub get
+flutter analyze
+flutter run
+```
 
-## STABLE – Connexion et navigation
+Puis dans l'application : ajouter un routeur → tester la connexion API → accéder aux modules (bloqués tant qu'aucun routeur n'est connecté).
 
-Cette étape rend le flux d'utilisation plus cohérent :
+## Compilation
 
-1. Ajouter un routeur.
-2. Sélectionner le routeur.
-3. Tester la connexion avec l'API RouterOS.
-4. Sauvegarder le mot de passe dans le stockage sécurisé.
-5. Accéder aux modules qui utilisent la session RouterOS active.
+```bash
+# Android (APK release)
+./BUILD_ROOTMIKROMANAGER.ps1
+# ou manuellement :
+flutter build apk --release
+```
 
-La navigation bloque désormais les modules réseau lorsqu'aucun routeur n'est connecté, au lieu de provoquer des erreurs d'exécution.
+Voir [BUILD_CHECKLIST.md](BUILD_CHECKLIST.md) et [android/README_ANDROID_BUILD.md](android/README_ANDROID_BUILD.md) pour le détail par plateforme.
 
+## Documentation
 
-## BUILD READY – Consolidation
+L'historique complet des lots de développement (un module ou une correction par fichier) est disponible dans [docs/](docs/). Points d'entrée utiles :
 
-Cette livraison prépare le projet pour la vérification réelle sur une machine Flutter :
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — architecture générale.
+- [docs/MIGRATION_MAPPING.md](docs/MIGRATION_MAPPING.md) — correspondance avec les pages PHP d'origine.
+- [docs/COMPLETENESS_AUDIT.md](docs/COMPLETENESS_AUDIT.md) — écarts fonctionnels restants.
+- [docs/PHP_SOURCE_INVENTORY.md](docs/PHP_SOURCE_INVENTORY.md) — inventaire de la base historique.
 
-- dépendances inutilisées retirées pour réduire les conflits ;
-- documentation Android ajoutée ;
-- permissions réseau documentées ;
-- checklist de compilation ajoutée ;
-- flux Routeur → Connexion → Session → Modules conservé.
+## Avertissement
 
-### Important
-Cette archive n'a pas été compilée automatiquement dans l'environnement de préparation, car le SDK Flutter/Android n'y est pas disponible. Le statut « BUILD READY » signifie que le projet a été consolidé pour la prochaine étape : compilation réelle avec `flutter analyze` puis `flutter run` sur votre environnement.
-
-
-## INTEGRATED – Suite
-
-Cette version corrige des incohérences d'intégration détectées entre les modules :
-
-- le générateur de vouchers reçoit maintenant correctement le service RouterOS ;
-- Firewall et NAT utilisent leurs constructeurs réels ;
-- la navigation centrale utilise une correspondance explicite des modules ;
-- les erreurs de génération de vouchers sont affichées proprement ;
-- un document `VERIFICATION_STATUS.md` indique précisément la différence entre les corrections statiques et une compilation Flutter réelle.
-
-### Étape suivante
-La validation définitive doit être faite avec `flutter analyze` et `flutter run` sur un PC disposant du SDK Flutter/Android.
-
-
-## VALIDATION BUILD
-
-Cette version ajoute :
-- script PowerShell de validation Flutter ;
-- script de génération APK Release ;
-- plan de tests MikroTik ;
-- procédure de compilation réelle ;
-- test Flutter minimal.
-
-La compilation APK doit être effectuée dans un environnement disposant de Flutter,
-Gradle et du SDK Android.
-
-
-## BUSINESS MODULES PHASE
-
-Cette phase étend la construction fonctionnelle :
-- Vouchers liés aux profils Hotspot réels ;
-- PPP/PPPoE avec secrets, profils et actifs ;
-- DHCP CRUD de base ;
-- DNS statique CRUD de base ;
-- Simple Queues CRUD de base ;
-- RouterOS service enrichi.
-
-Voir `docs/BUSINESS_MODULES_PHASE.md`.
-
-
-## SYSTEM MONITORING PHASE
-
-Ajouts :
-- Firewall/NAT renforcé ;
-- Interfaces/Traffic consolidés ;
-- Scripts/Scheduler/Logs ;
-- écran Système enrichi ;
-- Reports synthétiques.
-
-Voir `docs/SYSTEM_MONITORING_PHASE.md`.
-
-
-## ADVANCED NETWORK PHASE
-
-Cette phase ajoute :
-- monitoring RX/TX RouterOS réel ;
-- Neighbor Discovery ;
-- RoMON ;
-- sauvegarde JSON de l'application ;
-- backup/export RouterOS ;
-- entrée Voisinage dans la navigation.
-
-Voir `docs/ADVANCED_NETWORK_PHASE.md`.
-
-
-## MANAGEMENT & AUDIT PHASE
-
-Cette phase ajoute :
-- groupes/tags/recherche multi-routeurs ;
-- scan IP /24 des ports MikroTik ;
-- journal d’audit local ;
-- restauration JSON ;
-- migration SQLite v4.
-
-Voir `docs/MANAGEMENT_AUDIT_PHASE.md`.
-
-
-## VPN-AWARE DISCOVERY
-
-Le voisinage tient maintenant compte des routeurs accessibles via
-WireGuard, MikroTik BackToHome et ZeroTier :
-- inspection des interfaces et peers VPN RouterOS ;
-- extraction de plages VPN candidates ;
-- scan CIDR des ports MikroTik 8728/8729/8291 ;
-- Neighbor Discovery via le MikroTik distant ;
-- RoMON via un MikroTik joignable comme point d’entrée ;
-- scan CIDR VPN manuel.
-
-Voir `docs/VPN_AWARE_DISCOVERY.md`.
-
-
-## COMPLETION PHASE
-
-Ajouts :
-- historique vouchers ;
-- paramètres persistants ;
-- audit de complétude détaillé.
-
-Voir `docs/COMPLETENESS_AUDIT.md` pour les écarts fonctionnels restant à fermer avant la phase Android/iOS/APK.
-
-
-## API-SSL & HOTSPOT ADVANCED
-
-Ajouts :
-- RouterOS API-SSL 8729 via SecureSocket ;
-- primitives Hotspot avancées ;
-- vouchers avancés (préfixe, modes, longueurs, uptime, data limit, progression).
-
-Voir `docs/API_SSL_HOTSPOT_ADVANCED.md`.
-
-
-## PPP / FIREWALL / QUEUES ADVANCED
-
-Ajouts :
-- PPP/PPPoE edit + déconnexion active ;
-- Firewall hub Filter/NAT/Mangle/Address Lists ;
-- Queue Tree CRUD ;
-- hub Queues.
-
-Voir `docs/PPP_FIREWALL_QUEUES_ADVANCED.md`.
-
-
-## HOTSPOT ADVANCED & ROUTEROS FILES
-
-Ajouts :
-- Hotspot active disconnect ;
-- Host -> IP Binding ;
-- IP Binding CRUD ;
-- fichiers RouterOS ;
-- Backup unifié.
-
-Voir `docs/HOTSPOT_FILES_PHASE.md`.
-
-
-## VOUCHER QR / TLS / RESTORE
-
-- API-SSL 8729 réellement en `SecureSocket`;
-- choix certificat auto-signé ou validation stricte;
-- vouchers QR;
-- impression/PDF;
-- restauration d'un backup déjà présent sur RouterOS.
-
-Voir `docs/VOUCHER_QR_TLS_RESTORE.md`.
-
-
-## ROUTEROS CLIENT + HTTP
-
-RootMikroManager intègre maintenant :
-- `router_os_client ^2.0.1` comme transport socket complémentaire ;
-- `http ^1.6.0` pour RouterOS REST HTTPS ;
-- une stratégie hybride documentée.
-
-Voir `docs/ROUTER_OS_CLIENT_HTTP_INTEGRATION.md`.
-
-
-## STREAMING MONITORING
-
-- `router_os_client` réellement utilisé pour le monitoring live ;
-- `/interface/monitor-traffic` en streaming ;
-- Torch temps réel ;
-- tags + cancel ;
-- fallback polling ;
-- historique RX/TX responsive.
-
-Voir `docs/STREAMING_MONITORING_PHASE.md`.
-
-
-## HOTSPOT PROFILE ROOTMIKROMANAGER PARITY
-
-Les profils Hotspot disposent maintenant du formulaire RootMikroManager complet :
-Pool, Shared Users, Rate Limit, Expired Mode, Validity, Grace Period,
-Price, Selling Price, Lock User et Parent Queue, avec génération du on-login
-et synchronisation du scheduler associé.
-
-Voir `docs/HOTSPOT_PROFILE_ROOTMIKROMANAGER_PARITY.md`.
-
-
-## HOTSPOT USERS ROOTMIKROMANAGER PARITY
-
-Gestion avancée des users/vouchers existants : filtres profil/lot/expired,
-édition complète, enable/disable, Reset RootMikroManager, suppression sécurisée par
-lot et réimpression individuelle.
-
-Voir `docs/HOTSPOT_USERS_ROOTMIKROMANAGER_PARITY.md`.
-
-
-## REST CONNECTION FIX
-
-Le client REST empêche désormais les couples protocole/port incohérents
-comme `http://router:443/rest/...`, gère HTTPS/self-signed et fournit des
-erreurs réseau/TLS plus explicites.
-
-Voir `docs/REST_CONNECTION_FIX.md`.
-
-## DHCP / STATUS / TRAFFIC ROOTMIKROMANAGER PARITY
-DHCP Leases suit la vue RootMikroManager v7.135, le test TCP du port API reproduit
-le « Ping Test » RootMikroManager et le repaint RX/TX du monitoring est corrigé.
-
-## ROOTMIKROMANAGER SELLING REPORT PARITY
-Selling Report RouterOS compatible RootMikroManager : filtres Tout/Jour/Mois, recherche, total, résumé profil, CSV et Remove Data protégé.
-
-## ROOTMIKROMANAGER SYSTEM SCHEDULER PARITY
-Scheduler conforme à RootMikroManager, scripts RouterOS exécutables, Selling Report protégé et logs filtrables.
+Cette application exécute des commandes réelles sur des équipements RouterOS (y compris des opérations destructrices : suppression d'utilisateurs, redémarrage, modification du firewall, etc.). Testez systématiquement sur un routeur de test avant toute utilisation en production, et assurez-vous que le compte MikroTik utilisé dispose des droits appropriés.
