@@ -297,16 +297,20 @@ class _HotspotUsersScreenState extends State<HotspotUsersScreen> {
             ),
             DropdownButtonFormField<String>(
               value: profile,
+              isExpanded: true,
               decoration: const InputDecoration(labelText: 'Profil'),
               items: [
                 const DropdownMenuItem(
                   value: 'all',
-                  child: Text('Tous les profils'),
+                  child: Text('Tous les profils', overflow: TextOverflow.ellipsis),
                 ),
                 ...profiles.map(
                   (p) => DropdownMenuItem(
                     value: p['name'] ?? '',
-                    child: Text(p['name'] ?? '—'),
+                    child: Text(
+                      p['name'] ?? '—',
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
@@ -318,11 +322,18 @@ class _HotspotUsersScreenState extends State<HotspotUsersScreen> {
             ),
             DropdownButtonFormField<String>(
               value: comment,
+              isExpanded: true,
               decoration: const InputDecoration(labelText: 'Comment / lot'),
               items: [
-                const DropdownMenuItem(value: '', child: Text('Tous les lots')),
+                const DropdownMenuItem(
+                  value: '',
+                  child: Text('Tous les lots', overflow: TextOverflow.ellipsis),
+                ),
                 ...batchComments.map(
-                  (v) => DropdownMenuItem(value: v, child: Text(v)),
+                  (v) => DropdownMenuItem(
+                    value: v,
+                    child: Text(v, overflow: TextOverflow.ellipsis),
+                  ),
                 ),
               ],
               onChanged: (v) async {
