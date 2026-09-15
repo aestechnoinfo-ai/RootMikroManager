@@ -578,7 +578,7 @@ class _LogsScreenState extends State<LogsScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: topic,
                   decoration: const InputDecoration(labelText: 'Topic'),
                   items: [

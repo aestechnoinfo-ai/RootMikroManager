@@ -181,7 +181,7 @@ class _S extends State<WifiProfileEditorScreen> {
           const SizedBox(height: 10),
         ],
         if (widget.kind == WifiProfileKind.security)
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: auth.isEmpty ? null : auth,
             decoration: const InputDecoration(
               labelText: 'Authentication types',

@@ -230,7 +230,7 @@ class _HotspotProfileEditorScreenState
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             initialValue: _poolValue(),
             decoration: const InputDecoration(labelText: 'Address Pool'),
             items: [
@@ -263,7 +263,7 @@ class _HotspotProfileEditorScreenState
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<HotspotExpirationMode>(
+          DropdownButtonFormField<HotspotExpirationMode>(isExpanded: true, 
             initialValue: expirationMode,
             decoration: const InputDecoration(labelText: 'Expired Mode'),
             items: HotspotExpirationMode.values
@@ -327,7 +327,7 @@ class _HotspotProfileEditorScreenState
                 : (value) => setState(() => lockUser = value),
           ),
           const SizedBox(height: 4),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             initialValue: _queueValue(),
             decoration: const InputDecoration(labelText: 'Parent Queue'),
             items: [

@@ -407,7 +407,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
                 counterText: '',
               ),
             ),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(isExpanded: true, 
               value: selectedServer,
               decoration: const InputDecoration(labelText: 'Server'),
               items: [
@@ -424,7 +424,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
                   ? null
                   : (v) => setState(() => selectedServer = v ?? 'all'),
             ),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(isExpanded: true, 
               value: userMode,
               decoration: const InputDecoration(labelText: 'User Mode'),
               items: const [
@@ -446,7 +446,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
                       }
                     }),
             ),
-            DropdownButtonFormField<int>(
+            DropdownButtonFormField<int>(isExpanded: true, 
               value: userLength,
               decoration: const InputDecoration(labelText: 'User Length'),
               items: [
@@ -477,7 +477,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
               'Format : préfixe + code + suffixe (aucun séparateur automatique)',
               style: Theme.of(context).textTheme.bodySmall,
             ),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(isExpanded: true, 
               value: characterMode,
               decoration: const InputDecoration(labelText: 'Character'),
               items: [
@@ -515,7 +515,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
                   ? null
                   : (v) => setState(() => characterMode = v ?? 'lower'),
             ),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(isExpanded: true, 
               value: profiles.any((row) => row['name'] == selectedProfile)
                   ? selectedProfile
                   : null,
@@ -567,7 +567,7 @@ class _VoucherGeneratorScreenState extends State<VoucherGeneratorScreen> {
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 110,
-                  child: DropdownButtonFormField<int>(
+                  child: DropdownButtonFormField<int>(isExpanded: true, 
                     value: dataMultiplier,
                     decoration: const InputDecoration(labelText: 'Unité'),
                     items: const [

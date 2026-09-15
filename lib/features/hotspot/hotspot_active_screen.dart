@@ -165,7 +165,7 @@ class _HotspotActiveScreenState extends State<HotspotActiveScreen>
                   labelText: 'Utilisateur, IP, MAC…',
                 ),
               );
-              final serverField = DropdownButtonFormField<String>(
+              final serverField = DropdownButtonFormField<String>(isExpanded: true, 
                 value: server,
                 decoration: const InputDecoration(labelText: 'Serveur'),
                 items: [

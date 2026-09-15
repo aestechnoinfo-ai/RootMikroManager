@@ -72,7 +72,7 @@ class _S extends State<LoggingExportScreen> {
         : ListView(
             padding: const EdgeInsets.all(12),
             children: [
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: format,
                 decoration: const InputDecoration(labelText: 'Format'),
                 items: const ['csv', 'text']

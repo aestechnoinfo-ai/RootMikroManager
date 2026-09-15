@@ -302,7 +302,7 @@ class _HotspotAdvancedScreenState extends State<HotspotAdvancedScreen> {
 
               if (section != 0) return searchField;
 
-              final serverField = DropdownButtonFormField<String>(
+              final serverField = DropdownButtonFormField<String>(isExpanded: true, 
                 value: activeServer,
                 decoration: const InputDecoration(labelText: 'Server'),
                 items: [

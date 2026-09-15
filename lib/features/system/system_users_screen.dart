@@ -78,7 +78,7 @@ class _SystemUsersScreenState extends State<SystemUsersScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(isExpanded: true, 
                       value: groups.contains(group)
                           ? group
                           : groups.isEmpty

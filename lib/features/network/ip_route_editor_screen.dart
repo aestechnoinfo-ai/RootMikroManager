@@ -183,7 +183,7 @@ class _IpRouteEditorScreenState extends State<IpRouteEditorScreen> {
                   validator: NetworkInputValidator.gateway,
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: routingTables.contains(routingTable)
                       ? routingTable
                       : 'main',
@@ -222,7 +222,7 @@ class _IpRouteEditorScreenState extends State<IpRouteEditorScreen> {
                     );
                   },
                 ),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: checkGateway,
                   decoration: const InputDecoration(labelText: 'Check Gateway'),
                   items: const ['none', 'ping', 'arp', 'bfd']

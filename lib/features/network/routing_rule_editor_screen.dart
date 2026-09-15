@@ -159,7 +159,7 @@ class _State extends State<RoutingRuleEditorScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interface.isEmpty ? null : interface,
                 decoration: const InputDecoration(
                   labelText: 'Interface d’entrée',
@@ -174,7 +174,7 @@ class _State extends State<RoutingRuleEditorScreen> {
                 onChanged: (v) => setState(() => interface = v ?? ''),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: action,
                 decoration: const InputDecoration(labelText: 'Action'),
                 items:
@@ -190,7 +190,7 @@ class _State extends State<RoutingRuleEditorScreen> {
               ),
               if (action.startsWith('lookup')) ...[
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: table,
                   decoration: const InputDecoration(labelText: 'Table'),
                   items: tables

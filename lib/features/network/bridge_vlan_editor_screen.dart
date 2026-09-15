@@ -166,7 +166,7 @@ class _BridgeVlanEditorScreenState extends State<BridgeVlanEditorScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  DropdownButtonFormField<String>(
+                  DropdownButtonFormField<String>(isExpanded: true, 
                     value: bridge.isEmpty ? null : bridge,
                     decoration: const InputDecoration(labelText: 'Bridge'),
                     items: bridges

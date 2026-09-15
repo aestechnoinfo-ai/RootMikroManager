@@ -77,7 +77,7 @@ class _QueueTypeEditorScreenState extends State<QueueTypeEditorScreen> {
           decoration: const InputDecoration(labelText: 'Nom'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: kind,
           decoration: const InputDecoration(labelText: 'Kind'),
           items: const [
@@ -103,7 +103,7 @@ class _QueueTypeEditorScreenState extends State<QueueTypeEditorScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: classifier,
             decoration: const InputDecoration(labelText: 'PCQ Classifier'),
             items: const [

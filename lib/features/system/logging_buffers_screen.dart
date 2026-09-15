@@ -51,7 +51,7 @@ class _S extends State<LoggingBuffersScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: DropdownButtonFormField<String>(
+                child: DropdownButtonFormField<String>(isExpanded: true, 
                   value: buffer.isEmpty ? null : buffer,
                   decoration: const InputDecoration(labelText: 'Buffer'),
                   items: actions

@@ -144,7 +144,7 @@ class _S extends State<WifiAccessRuleEditorScreen> {
                 decoration: const InputDecoration(labelText: 'MAC Address'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: iface.isEmpty ? null : iface,
                 decoration: const InputDecoration(labelText: 'Interface'),
                 items: interfaces
@@ -170,7 +170,7 @@ class _S extends State<WifiAccessRuleEditorScreen> {
                 ),
               ],
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: action,
                 decoration: const InputDecoration(labelText: 'Action'),
                 items:

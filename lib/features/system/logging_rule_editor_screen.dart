@@ -134,7 +134,7 @@ class _S extends State<LoggingRuleEditorScreen> {
                   ),
                 ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: actions.contains(action) ? action : null,
                 decoration: const InputDecoration(labelText: 'Action'),
                 items: actions

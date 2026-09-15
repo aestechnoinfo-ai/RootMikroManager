@@ -113,7 +113,7 @@ class _ArpEditorScreenState extends State<ArpEditorScreen> {
                   validator: NetworkInputValidator.mac,
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: interfaces.contains(interfaceName)
                       ? interfaceName
                       : null,

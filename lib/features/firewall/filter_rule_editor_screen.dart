@@ -153,7 +153,7 @@ class _FilterRuleEditorScreenState extends State<FilterRuleEditorScreen> {
                 (v ?? '').trim().isEmpty ? 'Chain obligatoire' : null,
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: action,
             decoration: const InputDecoration(labelText: 'Action'),
             items: const [
@@ -170,7 +170,7 @@ class _FilterRuleEditorScreenState extends State<FilterRuleEditorScreen> {
             onChanged: (v) => setState(() => action = v ?? 'accept'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: protocol,
             decoration: const InputDecoration(labelText: 'Protocole'),
             items: const ['', 'tcp', 'udp', 'icmp', 'icmpv6', 'gre', 'esp']

@@ -149,7 +149,7 @@ class _S extends State<LoggingActionEditorScreen> {
           decoration: const InputDecoration(labelText: 'Nom'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: target,
           decoration: const InputDecoration(labelText: 'Target'),
           items: const [
@@ -210,7 +210,7 @@ class _S extends State<LoggingActionEditorScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: protocol,
             decoration: const InputDecoration(labelText: 'Protocol'),
             items: const [
@@ -221,7 +221,7 @@ class _S extends State<LoggingActionEditorScreen> {
             onChanged: (v) => setState(() => protocol = v ?? 'udp'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: format,
             decoration: const InputDecoration(labelText: 'Format'),
             items: const [
@@ -252,7 +252,7 @@ class _S extends State<LoggingActionEditorScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: severity,
             decoration: const InputDecoration(labelText: 'Syslog Severity'),
             items: const [
@@ -269,7 +269,7 @@ class _S extends State<LoggingActionEditorScreen> {
             onChanged: (v) => setState(() => severity = v ?? 'auto'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: facility,
             decoration: const InputDecoration(labelText: 'Syslog Facility'),
             items: const [
@@ -298,7 +298,7 @@ class _S extends State<LoggingActionEditorScreen> {
             onChanged: (v) => setState(() => facility = v ?? 'daemon'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: timeFormat,
             decoration: const InputDecoration(labelText: 'Syslog Time Format'),
             items: const [

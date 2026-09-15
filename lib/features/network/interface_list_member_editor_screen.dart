@@ -86,7 +86,7 @@ class _State extends State<InterfaceListMemberEditorScreen> {
         : ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: list.isEmpty ? null : list,
                 decoration: const InputDecoration(labelText: 'Interface List'),
                 items: lists
@@ -95,7 +95,7 @@ class _State extends State<InterfaceListMemberEditorScreen> {
                 onChanged: (v) => setState(() => list = v ?? ''),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interface.isEmpty ? null : interface,
                 decoration: const InputDecoration(labelText: 'Interface'),
                 items: interfaces

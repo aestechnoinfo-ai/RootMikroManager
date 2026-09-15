@@ -140,7 +140,7 @@ class _S extends State<VoucherReprintFilterScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(isExpanded: true, 
                       value: profile,
                       decoration: const InputDecoration(labelText: 'Profil'),
                       items: [

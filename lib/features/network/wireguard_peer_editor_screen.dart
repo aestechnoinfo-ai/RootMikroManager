@@ -148,7 +148,7 @@ class _State extends State<WireGuardPeerEditorScreen> {
         : ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interface.isEmpty ? null : interface,
                 decoration: const InputDecoration(
                   labelText: 'Interface WireGuard',

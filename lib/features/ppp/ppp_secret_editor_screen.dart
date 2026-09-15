@@ -163,7 +163,7 @@ class _PppSecretEditorScreenState extends State<PppSecretEditorScreen> {
             decoration: const InputDecoration(labelText: 'Mot de passe'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: serviceType,
             decoration: const InputDecoration(labelText: 'Service'),
             items: const [
@@ -178,7 +178,7 @@ class _PppSecretEditorScreenState extends State<PppSecretEditorScreen> {
             onChanged: (v) => setState(() => serviceType = v ?? 'pppoe'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: profiles.contains(profile) ? profile : profiles.first,
             decoration: const InputDecoration(labelText: 'Profil'),
             items: profiles

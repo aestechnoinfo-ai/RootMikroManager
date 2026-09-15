@@ -179,7 +179,7 @@ class _DnsStaticEditorScreenState extends State<DnsStaticEditorScreen> {
           decoration: const InputDecoration(labelText: 'Nom'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: type,
           decoration: const InputDecoration(labelText: 'Type'),
           items: const [

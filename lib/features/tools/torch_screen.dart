@@ -58,7 +58,7 @@ class _TorchScreenState extends State<TorchScreen> {
         : ListView(
             padding: const EdgeInsets.all(12),
             children: [
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interfaces.contains(interfaceName)
                     ? interfaceName
                     : null,

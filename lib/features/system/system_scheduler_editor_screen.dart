@@ -154,7 +154,7 @@ class _State extends State<SystemSchedulerEditorScreen> {
                       (v ?? '').trim().isEmpty ? 'Nom obligatoire' : null,
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: directScript.isEmpty ? null : directScript,
                   decoration: const InputDecoration(
                     labelText: 'Script direct (optionnel)',

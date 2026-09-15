@@ -121,7 +121,7 @@ class _RawRuleEditorScreenState extends State<RawRuleEditorScreen> {
           decoration: const InputDecoration(labelText: 'Chain'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: action,
           decoration: const InputDecoration(labelText: 'Action'),
           items: const [
@@ -136,7 +136,7 @@ class _RawRuleEditorScreenState extends State<RawRuleEditorScreen> {
           onChanged: (v) => setState(() => action = v ?? 'accept'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: protocol,
           decoration: const InputDecoration(labelText: 'Protocole'),
           items: const ['', 'tcp', 'udp', 'icmp']

@@ -125,7 +125,7 @@ class _S extends State<WifiProvisioningEditorScreen> {
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: action,
           decoration: const InputDecoration(labelText: 'Action'),
           items: const [

@@ -185,7 +185,7 @@ class _FirewallRuleEditorScreenState extends State<FirewallRuleEditorScreen> {
                 (v ?? '').trim().isEmpty ? 'Action obligatoire' : null,
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: protocol,
             decoration: const InputDecoration(labelText: 'Protocole'),
             items: const ['', 'tcp', 'udp', 'icmp', 'gre', 'ipsec-esp']

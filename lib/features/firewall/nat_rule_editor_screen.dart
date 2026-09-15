@@ -154,7 +154,7 @@ class _NatRuleEditorScreenState extends State<NatRuleEditorScreen> {
                 (v ?? '').trim().isEmpty ? 'Chain obligatoire' : null,
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: action,
             decoration: const InputDecoration(labelText: 'Action'),
             items: const [
@@ -170,7 +170,7 @@ class _NatRuleEditorScreenState extends State<NatRuleEditorScreen> {
             onChanged: (v) => setState(() => action = v ?? 'masquerade'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: protocol,
             decoration: const InputDecoration(labelText: 'Protocole'),
             items: const ['', 'tcp', 'udp', 'icmp']

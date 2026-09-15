@@ -184,7 +184,7 @@ class _VoucherTemplateEditorScreenState
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<VoucherPrintLayout>(
+              DropdownButtonFormField<VoucherPrintLayout>(isExpanded: true, 
                 value: previewLayout,
                 decoration: const InputDecoration(labelText: 'Modèle'),
                 items: const [
@@ -214,7 +214,7 @@ class _VoucherTemplateEditorScreenState
                 ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<VoucherPaperFormat>(
+              DropdownButtonFormField<VoucherPaperFormat>(isExpanded: true, 
                 value: paperFormat,
                 decoration: const InputDecoration(labelText: 'Format papier'),
                 items: VoucherPaperFormat.values

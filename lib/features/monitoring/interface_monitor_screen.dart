@@ -194,7 +194,7 @@ class _InterfaceMonitorScreenState extends State<InterfaceMonitorScreen> {
             builder: (context, constraints) => ListView(
               padding: const EdgeInsets.all(12),
               children: [
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: selectedName,
                   decoration: const InputDecoration(labelText: 'Interface'),
                   items: interfaces

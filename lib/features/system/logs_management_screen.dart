@@ -94,7 +94,7 @@ class _S extends State<LogsManagementScreen> {
                     labelText: 'Recherche',
                   ),
                 ),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: values('topics').contains(topic) ? topic : 'all',
                   decoration: const InputDecoration(labelText: 'Topic'),
                   items: values('topics')
@@ -102,7 +102,7 @@ class _S extends State<LogsManagementScreen> {
                       .toList(),
                   onChanged: (v) => setState(() => topic = v ?? 'all'),
                 ),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: severity,
                   decoration: const InputDecoration(labelText: 'Sévérité'),
                   items:
@@ -120,7 +120,7 @@ class _S extends State<LogsManagementScreen> {
                           .toList(),
                   onChanged: (v) => setState(() => severity = v ?? 'all'),
                 ),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: values('buffer').contains(buffer) ? buffer : 'all',
                   decoration: const InputDecoration(labelText: 'Buffer'),
                   items: values('buffer')

@@ -117,7 +117,7 @@ class _HotspotServerEditorScreenState extends State<HotspotServerEditorScreen> {
                 decoration: const InputDecoration(labelText: 'Nom'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interfaces.contains(interfaceName)
                     ? interfaceName
                     : null,
@@ -129,7 +129,7 @@ class _HotspotServerEditorScreenState extends State<HotspotServerEditorScreen> {
                     setState(() => interfaceName = v ?? interfaceName),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: pools.contains(addressPool) ? addressPool : 'none',
                 decoration: const InputDecoration(labelText: 'Address Pool'),
                 items: pools
@@ -138,7 +138,7 @@ class _HotspotServerEditorScreenState extends State<HotspotServerEditorScreen> {
                 onChanged: (v) => setState(() => addressPool = v ?? 'none'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: profiles.contains(profile) ? profile : null,
                 decoration: const InputDecoration(labelText: 'Server Profile'),
                 items: profiles

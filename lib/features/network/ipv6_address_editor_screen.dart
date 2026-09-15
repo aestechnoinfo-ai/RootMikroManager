@@ -125,7 +125,7 @@ class _State extends State<Ipv6AddressEditorScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interface.isEmpty ? null : interface,
                 decoration: const InputDecoration(labelText: 'Interface'),
                 items: interfaces

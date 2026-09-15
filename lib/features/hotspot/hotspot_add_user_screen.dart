@@ -162,7 +162,7 @@ class _HotspotAddUserScreenState extends State<HotspotAddUserScreen> {
                 LayoutBuilder(
                   builder: (context, c) {
                     final fields = [
-                      DropdownButtonFormField<String>(
+                      DropdownButtonFormField<String>(isExpanded: true, 
                         value: server,
                         decoration: const InputDecoration(
                           labelText: 'Serveur Hotspot',
@@ -181,7 +181,7 @@ class _HotspotAddUserScreenState extends State<HotspotAddUserScreen> {
                         ],
                         onChanged: (v) => setState(() => server = v ?? 'all'),
                       ),
-                      DropdownButtonFormField<String>(
+                      DropdownButtonFormField<String>(isExpanded: true, 
                         value: profile.isEmpty ? null : profile,
                         decoration: const InputDecoration(labelText: 'Profil'),
                         items: profiles
@@ -271,7 +271,7 @@ class _HotspotAddUserScreenState extends State<HotspotAddUserScreen> {
                         const SizedBox(width: 8),
                         SizedBox(
                           width: 92,
-                          child: DropdownButtonFormField<String>(
+                          child: DropdownButtonFormField<String>(isExpanded: true, 
                             value: unit,
                             decoration: const InputDecoration(
                               labelText: 'Unité',

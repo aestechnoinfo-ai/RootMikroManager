@@ -129,7 +129,7 @@ class _QueueTreeEditorScreenState extends State<QueueTreeEditorScreen> {
           decoration: const InputDecoration(labelText: 'Packet Mark'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: queueTypes.contains(queue) ? queue : queueTypes.first,
           decoration: const InputDecoration(labelText: 'Queue Type'),
           items: queueTypes
@@ -163,7 +163,7 @@ class _QueueTreeEditorScreenState extends State<QueueTreeEditorScreen> {
           decoration: const InputDecoration(labelText: 'Burst Time'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<int>(
+        DropdownButtonFormField<int>(isExpanded: true, 
           value: priority,
           decoration: const InputDecoration(labelText: 'Priority'),
           items: List.generate(

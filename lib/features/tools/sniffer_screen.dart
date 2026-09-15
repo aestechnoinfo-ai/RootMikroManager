@@ -69,7 +69,7 @@ class _SnifferScreenState extends State<SnifferScreen> {
                   ),
                 ),
               ),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interfaces.contains(interfaceName)
                     ? interfaceName
                     : null,

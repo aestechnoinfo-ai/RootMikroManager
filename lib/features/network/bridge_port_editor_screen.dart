@@ -158,7 +158,7 @@ class _BridgePortEditorScreenState extends State<BridgePortEditorScreen> {
                 : 'PVID invalide',
           ),
           const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: frame,
             decoration: const InputDecoration(labelText: 'Frame types'),
             items: const [
@@ -180,7 +180,7 @@ class _BridgePortEditorScreenState extends State<BridgePortEditorScreen> {
             onChanged: (v) => setState(() => ingress = v),
           ),
           const Divider(),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: edge,
             decoration: const InputDecoration(labelText: 'STP Edge'),
             items: const [
@@ -193,7 +193,7 @@ class _BridgePortEditorScreenState extends State<BridgePortEditorScreen> {
             onChanged: (v) => setState(() => edge = v ?? 'auto'),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: pointToPoint,
             decoration: const InputDecoration(labelText: 'Point-to-point'),
             items: const [

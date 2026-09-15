@@ -97,7 +97,7 @@ class _BridgeManagementScreenState extends State<BridgeManagementScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(isExpanded: true, 
                       value: bridgeName,
                       decoration: const InputDecoration(labelText: 'Bridge'),
                       items: bridgeNames
@@ -109,7 +109,7 @@ class _BridgeManagementScreenState extends State<BridgeManagementScreen> {
                           local(() => bridgeName = v ?? bridgeName),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(isExpanded: true, 
                       value: interfaceName,
                       decoration: const InputDecoration(labelText: 'Interface'),
                       items: interfaceNames
@@ -130,7 +130,7 @@ class _BridgeManagementScreenState extends State<BridgeManagementScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
+                    DropdownButtonFormField<String>(isExpanded: true, 
                       value: frameTypes,
                       decoration: const InputDecoration(
                         labelText: 'Frame types',

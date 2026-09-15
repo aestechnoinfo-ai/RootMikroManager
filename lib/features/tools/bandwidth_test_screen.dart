@@ -85,7 +85,7 @@ class _BandwidthTestScreenState extends State<BandwidthTestScreen> {
           decoration: const InputDecoration(labelText: 'Mot de passe'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: protocol,
           decoration: const InputDecoration(labelText: 'Protocole'),
           items: const [
@@ -95,7 +95,7 @@ class _BandwidthTestScreenState extends State<BandwidthTestScreen> {
           onChanged: (v) => setState(() => protocol = v ?? 'tcp'),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: direction,
           decoration: const InputDecoration(labelText: 'Direction'),
           items: const [

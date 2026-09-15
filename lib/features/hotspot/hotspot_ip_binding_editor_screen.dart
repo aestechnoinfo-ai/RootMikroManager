@@ -98,7 +98,7 @@ class _HotspotIpBindingEditorScreenState
                 decoration: const InputDecoration(labelText: 'To Address'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: server,
                 decoration: const InputDecoration(labelText: 'Server'),
                 items: [
@@ -113,7 +113,7 @@ class _HotspotIpBindingEditorScreenState
                 onChanged: (v) => setState(() => server = v ?? 'all'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: type,
                 decoration: const InputDecoration(labelText: 'Type'),
                 items: const [

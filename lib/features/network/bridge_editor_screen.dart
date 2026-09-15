@@ -94,7 +94,7 @@ class _BridgeEditorScreenState extends State<BridgeEditorScreen> {
                 BridgeVlanValidator.validMtu(v ?? '') ? null : 'MTU invalide',
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: protocolMode,
             decoration: const InputDecoration(labelText: 'Protocol Mode'),
             items: const [

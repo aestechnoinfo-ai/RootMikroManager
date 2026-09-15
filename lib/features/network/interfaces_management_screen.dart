@@ -129,7 +129,7 @@ class _InterfacesManagementScreenState
                   labelText: 'Nom, type, MAC, commentaire…',
                 ),
               );
-              final typeField = DropdownButtonFormField<String>(
+              final typeField = DropdownButtonFormField<String>(isExpanded: true, 
                 value: types.contains(type) ? type : 'all',
                 decoration: const InputDecoration(labelText: 'Type'),
                 items: types

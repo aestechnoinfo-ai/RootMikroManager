@@ -128,7 +128,7 @@ class _IpAddressEditorScreenState extends State<IpAddressEditorScreen> {
                   validator: NetworkInputValidator.ipv4Cidr,
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: interfaces.contains(interfaceName)
                       ? interfaceName
                       : null,

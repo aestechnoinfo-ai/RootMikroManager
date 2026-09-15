@@ -66,7 +66,7 @@ class _WirelessScanScreenState extends State<WirelessScanScreen> {
         : ListView(
             padding: const EdgeInsets.all(12),
             children: [
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: selectedId,
                 decoration: const InputDecoration(labelText: 'Interface radio'),
                 items: interfaces

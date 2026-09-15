@@ -149,7 +149,7 @@ class _DhcpServerEditorScreenState extends State<DhcpServerEditorScreen> {
                 decoration: const InputDecoration(labelText: 'Nom'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: interfaces.contains(interfaceName)
                     ? interfaceName
                     : null,
@@ -161,7 +161,7 @@ class _DhcpServerEditorScreenState extends State<DhcpServerEditorScreen> {
                     setState(() => interfaceName = v ?? interfaceName),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: pools.contains(addressPool)
                     ? addressPool
                     : 'static-only',

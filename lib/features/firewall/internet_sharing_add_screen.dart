@@ -68,7 +68,7 @@ class _InternetSharingAddScreenState extends State<InternetSharingAddScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: selectedInterface,
                 decoration: const InputDecoration(labelText: 'Interface'),
                 items: interfaces

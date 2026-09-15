@@ -127,7 +127,7 @@ class _VlanEditorScreenState extends State<VlanEditorScreen> {
                       (v?.trim().isEmpty ?? true) ? 'Nom requis' : null,
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<String>(isExpanded: true, 
                   value: interfaces.contains(parent) ? parent : null,
                   decoration: const InputDecoration(
                     labelText: 'Interface parent',

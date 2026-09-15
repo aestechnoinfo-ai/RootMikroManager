@@ -433,7 +433,7 @@ class _RootMikroManagerSalesReportScreenState
           LayoutBuilder(
             builder: (context, constraints) {
               final compact = constraints.maxWidth < 520;
-              final profile = DropdownButtonFormField<String>(
+              final profile = DropdownButtonFormField<String>(isExpanded: true, 
                 value: profiles.contains(profileFilter) ? profileFilter : 'all',
                 decoration: const InputDecoration(labelText: 'Profil'),
                 items: [
@@ -450,7 +450,7 @@ class _RootMikroManagerSalesReportScreenState
                   page = 0;
                 }),
               );
-              final comment = DropdownButtonFormField<String>(
+              final comment = DropdownButtonFormField<String>(isExpanded: true, 
                 value: comments.contains(commentFilter) ? commentFilter : 'all',
                 decoration: const InputDecoration(
                   labelText: 'Commentaire / batch',

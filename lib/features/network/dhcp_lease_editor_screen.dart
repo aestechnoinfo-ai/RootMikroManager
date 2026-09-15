@@ -116,7 +116,7 @@ class _DhcpLeaseEditorScreenState extends State<DhcpLeaseEditorScreen> {
                 decoration: const InputDecoration(labelText: 'Adresse MAC'),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: servers.contains(server) ? server : 'all',
                 decoration: const InputDecoration(labelText: 'Serveur'),
                 items: servers

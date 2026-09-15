@@ -295,7 +295,7 @@ class _HotspotUserEditorScreenState extends State<HotspotUserEditorScreen> {
             onChanged: saving ? null : (v) => setState(() => enabled = v),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: _serverValue(),
             decoration: const InputDecoration(labelText: 'Server'),
             items: [
@@ -335,7 +335,7 @@ class _HotspotUserEditorScreenState extends State<HotspotUserEditorScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(isExpanded: true, 
             value: _profileValue(),
             decoration: const InputDecoration(labelText: 'Profile'),
             items: profiles
@@ -385,7 +385,7 @@ class _HotspotUserEditorScreenState extends State<HotspotUserEditorScreen> {
               const SizedBox(width: 8),
               SizedBox(
                 width: 100,
-                child: DropdownButtonFormField<String>(
+                child: DropdownButtonFormField<String>(isExpanded: true, 
                   value: unit,
                   items: const [
                     DropdownMenuItem(value: 'MB', child: Text('MB')),

@@ -132,7 +132,7 @@ class _State extends State<Ipv6RouteEditorScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: table,
                 decoration: const InputDecoration(labelText: 'Routing Table'),
                 items: tables

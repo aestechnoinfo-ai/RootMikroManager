@@ -60,7 +60,7 @@ class _SystemNtpScreenState extends State<SystemNtpScreen> {
                 value: enabled,
                 onChanged: (v) => setState(() => enabled = v),
               ),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(isExpanded: true, 
                 value: mode,
                 decoration: const InputDecoration(labelText: 'Mode NTP'),
                 items: const ['unicast', 'broadcast', 'manycast', 'multicast']

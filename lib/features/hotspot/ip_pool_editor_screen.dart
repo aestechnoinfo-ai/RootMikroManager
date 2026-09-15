@@ -85,7 +85,7 @@ class _IpPoolEditorScreenState extends State<IpPoolEditorScreen> {
           ),
         ),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<String>(isExpanded: true, 
           value: pools.contains(nextPool) ? nextPool : 'none',
           decoration: const InputDecoration(labelText: 'Next Pool'),
           items: pools
