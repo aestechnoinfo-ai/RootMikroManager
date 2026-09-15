@@ -1,0 +1,36 @@
+name: root_mikro_manager
+description: RootMikroManager - gestion native MikroTik RouterOS.
+publish_to: none
+version: 1.0.0+28
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+
+dependencies:
+  http: ^1.6.0
+  go_router: ^18.0.0
+  router_os_client: ^2.0.1
+  mikrotik_mndp: ^0.0.4
+  network_info_plus: ^4.1.0+1
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  sqflite: ^2.4.1
+  path: ^1.9.0
+  flutter_secure_storage: ^9.2.4
+  path_provider: ^2.1.5
+  qr_flutter: ^4.1.0
+  printing: ^5.14.3
+  pdf: ^3.12.0
+  cached_network_image: ^3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  sqflite_common_ffi: ^2.4.0
+flutter:
+  uses-material-design: true
+  assets:
+    - lib/assets/images/logo.png
+    - lib/assets/images-mikrotik/

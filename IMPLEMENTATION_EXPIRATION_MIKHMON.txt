@@ -1,0 +1,307 @@
+ROOTMIKROMANAGER — CODE IMPLEMENTE POUR L'EXPIRATION HOTSPOT
+Version du projet : 1.0.0+23
+
+Ce document regroupe les nouveaux blocs et les blocs modifiés. Les parties
+inchangées des fichiers volumineux ne sont pas recopiées.
+
+===============================================================================
+1. lib/features/hotspot/mikhmon_time_parser.dart — NOUVEAU FICHIER COMPLET
+===============================================================================
+
+class MikhmonTimeParser {
+  const MikhmonTimeParser._();
+
+  /// Converts human input to a RouterOS interval.
+  ///
+  /// Textual months use the conventional Mikhmon duration of 30 days because
+  /// RouterOS schedulers have no calendar-month interval. A bare `m` remains
+  /// minutes, as required by RouterOS; use `mois` or `month` for months.
+  static String normalize(String input) {
+    var value = _foldAccents(
+      input.toLowerCase(),
+    ).replaceAll(RegExp(r'\s+'), '');
+    if (value.isEmpty) throw const FormatException('Durée vide');
+    if (RegExp(r'^\d+$').hasMatch(value)) value = '${value}h';
+
+    final token = RegExp(
+      r'(\d+)(months?|mois|semaines?|weeks?|journees?|jours?|days?|heures?|hours?|hrs?|minutes?|mins?|secondes?|seconds?|secs?|[wdhms])',
+      caseSensitive: false,
+    );
+    var cursor = 0;
+    var seconds = 0;
+    for (final match in token.allMatches(value)) {
+      if (match.start != cursor) {
+        throw FormatException('Durée invalide: $input');
+      }
+      cursor = match.end;
+      final amount = int.parse(match.group(1)!);
+      final unit = match.group(2)!.toLowerCase();
+      seconds +=
+          amount *
+          switch (unit) {
+            'month' || 'months' || 'mois' => 30 * 24 * 60 * 60,
+            'w' || 'week' || 'weeks' || 'semaine' || 'semaines' =>
+              7 * 24 * 60 * 60,
+            'd' ||
+            'day' ||
+            'days' ||
+            'jour' ||
+            'jours' ||
+            'journee' ||
+            'journees' => 24 * 60 * 60,
+            'h' ||
+            'hour' ||
+            'hours' ||
+            'heure' ||
+            'heures' ||
+            'hr' ||
+            'hrs' => 60 * 60,
+            'm' || 'min' || 'mins' || 'minute' || 'minutes' => 60,
+            's' ||
+            'sec' ||
+            'secs' ||
+            'seconde' ||
+            'secondes' ||
+            'second' ||
+            'seconds' => 1,
+            _ => throw FormatException('Unité invalide: $unit'),
+          };
+    }
+    if (cursor != value.length || seconds <= 0) {
+      throw FormatException('Durée invalide: $input');
+    }
+
+    final out = StringBuffer();
+    void take(String suffix, int unitSeconds) {
+      final amount = seconds ~/ unitSeconds;
+      if (amount > 0) out.write('$amount$suffix');
+      seconds %= unitSeconds;
+    }
+
+    take('w', 7 * 24 * 60 * 60);
+    take('d', 24 * 60 * 60);
+    take('h', 60 * 60);
+    take('m', 60);
+    take('s', 1);
+    return out.toString();
+  }
+
+  static String _foldAccents(String value) => value
+      .replaceAll(RegExp('[àáâäãå]'), 'a')
+      .replaceAll(RegExp('[èéêë]'), 'e')
+      .replaceAll(RegExp('[ìíîï]'), 'i')
+      .replaceAll(RegExp('[òóôöõ]'), 'o')
+      .replaceAll(RegExp('[ùúûü]'), 'u')
+      .replaceAll('ç', 'c');
+}
+
+===============================================================================
+2. hotspot_profile_config.dart — buildOnLogin MODIFIE
+===============================================================================
+
+static String buildOnLogin(HotspotProfileConfig config) {
+  final mode = config.expirationMode.code;
+  final price = _zero(config.price);
+  final sellingPrice = _zero(config.sellingPrice);
+  final validity = MikhmonTimeParser.normalize(config.validity);
+
+  final lockScript = config.lockUser
+      ? '; [:local mac $"mac-address"; /ip hotspot user set '
+            'mac-address=$mac [find where name=$user]]'
+      : '';
+
+  if (config.expirationMode == HotspotExpirationMode.none) {
+    if (price == '0' && sellingPrice == '0' && !config.lockUser) return '';
+    return ':put (",,$price,,$sellingPrice,,'
+        '${config.lockUser ? 'Enable' : 'Disable'},")$lockScript';
+  }
+
+  final record =
+      '; :local mac $"mac-address"; '
+      ':local time [/system clock get time ]; '
+      '/system script add '
+      'name="$date-|-$time-|-$user-|-$price-|-$address-|-$mac-|-${validity}-|-${config.name}-|-$comment" '
+      'owner="$month$year" source="$date" '
+      'comment="RootMikroManager"';
+
+  var script =
+      ':put (",$mode,$price,$validity,$sellingPrice,,'
+      '${config.lockUser ? 'Enable' : 'Disable'},"); '
+      '{:local comment [ /ip hotspot user get '
+      '[/ip hotspot user find where name="$user"] comment]; '
+      ':local ucode [:pick $comment 0 2]; '
+      ':if ($ucode = "vc" or $ucode = "up" or $comment = "") do={ '
+      ':local date [ /system clock get date ]; '
+      ':local year [ :pick $date 0 4 ]; '
+      ':local month [ :pick $date 5 7 ]; '
+      ':if ([:len [/system scheduler find where name="$user"]] = 0) do={ '
+      ':local expiryEvent (":local targetUser \\"" . $user . "\\"; '
+      ':local previousComment [/ip hotspot user get [find where name=\\$targetUser] comment]; '
+      '/ip hotspot active remove [find where user=\\$targetUser]; '
+      '/ip hotspot user set disabled=yes comment=(\\"expre=1;\\" . \\$previousComment) '
+      '[find where name=\\$targetUser]; '
+      '/system scheduler remove [find where name=\\$targetUser]"); '
+      '/system scheduler add name="$user" disabled=no '
+      'start-date=$date interval="$validity" on-event=$expiryEvent; }';
+
+  if (config.expirationMode == HotspotExpirationMode.removeAndRecord ||
+      config.expirationMode == HotspotExpirationMode.noticeAndRecord) {
+    script += record;
+  }
+  script += lockScript;
+  script += '}}';
+  return script;
+}
+
+NOTE : dans le véritable fichier Dart, les caractères $ destinés à RouterOS
+sont échappés avec une barre oblique inverse afin d'empêcher l'interpolation
+par Dart. Consulter le fichier source pour les échappements littéraux exacts.
+
+===============================================================================
+3. hotspot_profile_validator.dart — VALIDATION MODIFIEE
+===============================================================================
+
+if (config.expirationMode != HotspotExpirationMode.none) {
+  if (config.validity.trim().isEmpty) {
+    issues.add('Une validité est obligatoire avec un mode d’expiration.');
+  } else if (!_isTime(config.validity)) {
+    issues.add(
+      'Validité invalide. Exemples : 30min, 24h, 1jour, 4w, 3mois.',
+    );
+  }
+}
+
+if (config.gracePeriod.trim().isNotEmpty && !_isTime(config.gracePeriod)) {
+  issues.add('Grace Period invalide.');
+}
+
+bool _isTime(String value) {
+  try {
+    MikhmonTimeParser.normalize(value);
+    return true;
+  } on FormatException {
+    return false;
+  }
+}
+
+===============================================================================
+4. hotspot_profile_editor_screen.dart — NORMALISATION AVANT ENREGISTREMENT
+===============================================================================
+
+String normalizedValidity = validity.text.trim();
+String normalizedGracePeriod = gracePeriod.text.trim();
+try {
+  if (expirationMode != HotspotExpirationMode.none) {
+    normalizedValidity = MikhmonTimeParser.normalize(normalizedValidity);
+  }
+  normalizedGracePeriod = MikhmonTimeParser.normalize(
+    normalizedGracePeriod.isEmpty ? '5m' : normalizedGracePeriod,
+  );
+} on FormatException catch (error) {
+  _message(error.message);
+  return;
+}
+
+Ces valeurs normalisées sont ensuite placées dans HotspotProfileConfig :
+
+validity: normalizedValidity,
+gracePeriod: normalizedGracePeriod,
+
+===============================================================================
+5. routeros_service.dart — SAUVEGARDE ET RETRAIT DES ANCIENS MONITEURS
+===============================================================================
+
+Future<void> saveRootMikroManagerHotspotProfile(
+  HotspotProfileConfig config,
+) async {
+  final values = <String, String>{
+    'name': config.name,
+    'address-pool': config.addressPool,
+    'rate-limit': config.rateLimit,
+    'shared-users': config.sharedUsers.toString(),
+    'status-autorefresh': '1m',
+    'on-login': RootMikroManagerProfileScriptCodec.buildOnLogin(config),
+    'parent-queue': config.parentQueue,
+  };
+
+  if (config.id == null) {
+    await add('/ip/hotspot/user/profile', values);
+  } else {
+    await set('/ip/hotspot/user/profile', config.id!, values);
+  }
+  await _syncRootMikroManagerProfileScheduler(config);
+}
+
+Future<void> _syncRootMikroManagerProfileScheduler(
+  HotspotProfileConfig config,
+) async {
+  final schedulers = await this.schedulers();
+
+  bool legacyProfileMonitor(Map<String, String> row) =>
+      (row['comment'] ?? '').startsWith('Monitor Profile ');
+  final matchingCurrent = schedulers
+      .where((row) => row['name'] == config.name && legacyProfileMonitor(row))
+      .toList();
+  final matchingOriginal =
+      config.originalName.isEmpty || config.originalName == config.name
+      ? <Map<String, String>>[]
+      : schedulers
+            .where(
+              (row) =>
+                  row['name'] == config.originalName &&
+                  legacyProfileMonitor(row),
+            )
+            .toList();
+
+  // Les schedulers individuels créés par on-login gèrent désormais
+  // l'expiration. Les anciens scanners de profil sont supprimés.
+  for (final row in [...matchingCurrent, ...matchingOriginal]) {
+    final id = row['.id'];
+    if (id != null) {
+      await remove('/system/scheduler', id);
+    }
+  }
+}
+
+===============================================================================
+6. test/mikhmon_time_parser_test.dart — NOUVEAUX TESTS
+===============================================================================
+
+test('normalise les durées humaines cumulées pour RouterOS', () {
+  expect(MikhmonTimeParser.normalize('24'), '1d');
+  expect(MikhmonTimeParser.normalize('24h'), '1d');
+  expect(MikhmonTimeParser.normalize('28h30min'), '1d4h30m');
+  expect(MikhmonTimeParser.normalize(' 1d 4H 30 min '), '1d4h30m');
+  expect(MikhmonTimeParser.normalize('1 journée'), '1d');
+  expect(MikhmonTimeParser.normalize('2 jours'), '2d');
+  expect(MikhmonTimeParser.normalize('4w'), '4w');
+  expect(MikhmonTimeParser.normalize('1m'), '1m');
+  expect(MikhmonTimeParser.normalize('3 mois'), '12w6d');
+});
+
+test('refuse les durées partielles, nulles et inconnues', () {
+  for (final value in ['', '0h', '1hxyz', '-2h', '1.5h']) {
+    expect(() => MikhmonTimeParser.normalize(value), throwsFormatException);
+  }
+});
+
+test('on-login crée une expiration individuelle sans variable i', () {
+  final script = RootMikroManagerProfileScriptCodec.buildOnLogin(
+    const HotspotProfileConfig(
+      name: '3-heures',
+      expirationMode: HotspotExpirationMode.removeAndRecord,
+      validity: '180 min',
+    ),
+  );
+  expect(script, contains('interval="3h"'));
+  expect(script, contains('on-event=$expiryEvent'));
+  expect(script, contains('disabled=yes'));
+  expect(script, contains('expre=1;'));
+  expect(script, contains('/ip hotspot active remove'));
+  expect(script, contains('/system scheduler remove'));
+  expect(RegExp(r'\b(?:local|foreach|for)\s+i\b').hasMatch(script), isFalse);
+});
+
+===============================================================================
+FIN DU DOCUMENT
+===============================================================================
